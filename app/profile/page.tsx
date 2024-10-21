@@ -5,7 +5,7 @@ import { useLiff } from '@/components/LiffProvider';
 
 
 export default function Profile() {
-  const [profile, setProfile] = useState<Profile | null>(null);
+  const [profile, setProfile] = useState(null);
   const { liff } = useLiff();
 
   useEffect(() => {
