@@ -12,13 +12,13 @@ import './styles.css';
 
 export default function Booking() {
     const [showModal, setShowModal] = useState<boolean>(false)
-    const [day, setDay] = useState<string>("")
-    const [shop, setShop] = useState<string>("shop_1")
-    const [staff, setStaff] = useState<string>("staff_1")
-    const [time, setTime] = useState<number>(3600000)//１サービスあたりの時間
-    const [user, setUser] = useState<string>("me")
-    const [events, setEvents] = useState([])
-    const [availability, setAvailability] = useState([])
+    //const [day, setDay] = useState<string>("")
+    //const [shop, setShop] = useState<string>("shop_1")
+    //const [staff, setStaff] = useState<string>("staff_1")
+    //const [time, setTime] = useState<number>(3600000)//１サービスあたりの時間
+    //const [user, setUser] = useState<string>("me")
+    //const [events, setEvents] = useState([])
+    //const [availability, setAvailability] = useState([])
 
     const openning = "09:00"
     const closing = "17:00"
@@ -49,7 +49,7 @@ export default function Booking() {
         // ここで日付クリック時の処理を行います
         console.log('Clicked on date:', arg.dateStr)
         //setShowModal(true)
-        setDay(arg.dateStr)
+        //setDay(arg.dateStr)
         alert(arg.dateStr)
         //loadReservations(arg.dateStr,shop,staff)
 
@@ -69,6 +69,7 @@ export default function Booking() {
         //load_availability(shop, staff)
     },[])
 
+    /*
     useEffect(() => {
         console.log("events", events)
     }, [events])
@@ -76,6 +77,7 @@ export default function Booking() {
     useEffect(() => {
         console.log("availability", availability)
     }, [availability])
+    */
 
     return (
         <div className="w-full h-full">
@@ -93,7 +95,7 @@ export default function Booking() {
             dayCellClassNames={renderPastDays}
             height="auto"
             dateClick={handleDateClick}
-            events={availability}
+            events={[]}
             />
             </div>
             )}
