@@ -45,7 +45,7 @@ export default function Booking() {
     //const reservations = loadReservationData()
     //console.log(reservations)
     */
-    const handleDateClick = (arg) => {
+    const handleDateClick = (arg:any) => {
         // ここで日付クリック時の処理を行います
         console.log('Clicked on date:', arg.dateStr)
         //setShowModal(true)
@@ -56,7 +56,7 @@ export default function Booking() {
         //console.log("data", reservations(arg.dateStr,shop,staff))
       };
 
-    const renderPastDays = (arg) => {
+    const renderPastDays = (arg:any) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     if (arg.date < today) {
