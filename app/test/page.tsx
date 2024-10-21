@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useLiff } from '@/components/LiffProvider';
 
 
-export default function Profile() {
+export default function Test() {
   const [profile, setProfile] = useState(null);
   const { liff } = useLiff();
 
