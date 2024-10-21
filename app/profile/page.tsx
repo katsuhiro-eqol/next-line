@@ -22,12 +22,6 @@ export default function Profile() {
   return (
     <div>
       profile
-      <button
-          onClick={() => liff?.login()}
-          className='bg-blue-500 text-white px-4 py-2 mt-4 rounded-md hover:bg-blue-600'
-        >
-          login
-        </button>
     </div>
   );
 }

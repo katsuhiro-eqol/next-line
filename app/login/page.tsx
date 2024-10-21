@@ -7,11 +7,9 @@ import { useLiff } from '@/components/LiffProvider';
 export default function Login() {
     const { liff } = useLiff();
 
-    const loginUrl = `https://next-line.onrender.com/profile?redirect_uri=${encodeURIComponent(liff?.permanentLink.createUrl())}`;
-
-
   useEffect(() => {
     if (liff?.isLoggedIn()) {
+        const loginUrl = `https://next-line.onrender.com/profile?redirect_uri=${encodeURIComponent(liff?.permanentLink.createUrl())}`;
         liff?.openWindow({
             url: loginUrl,
             external: true
@@ -26,7 +24,12 @@ export default function Login() {
 
   return (
     <div>
-      Login
+        <button
+        onClick={() => liff?.login()}
+        className='bg-blue-500 text-white px-4 py-2 mt-4 rounded-md hover:bg-blue-600'
+        >
+        login
+        </button>
     </div>
   );
 }
