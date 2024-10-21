@@ -1,5 +1,6 @@
 'use client';
 import { useEffect } from 'react';
+import { redirect } from "next/navigation";
 import { useLiff } from '@/components/LiffProvider';
 
 
@@ -10,8 +11,7 @@ export default function Login() {
     if (liff?.isLoggedIn()) {
         console.log("loginしました")
         const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
-        console.log("token", token)
+        console.log("params", urlParams)
     } else {
         console.log("loginしてません")
         liff?.login()
@@ -19,14 +19,13 @@ export default function Login() {
   }, [liff]);
 
   return (
-    <div>
-        {(liff?.isLoggedIn())  ? (
-            <div>ログインしました</div>
-        ):(
-            <button onClick={() => liff?.login()} className='bg-blue-500 text-white px-4 py-2 mt-4 rounded-md hover:bg-blue-600'>
-            login
-            </button>
-        )}
+    <div className="w-full h-hull flex justify-center bg-gray-300 ">
+      {(liff?.isLoggedIn()) ? (
+        <p>loading...</p>
+      ):(
+        <p>ログインしました</p>
+      )} 
+
     </div>
   );
 }
