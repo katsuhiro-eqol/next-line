@@ -7,7 +7,7 @@ import { useLiff } from '@/components/LiffProvider';
 export default function Login() {
     const { liff } = useLiff();
 
-    const loginUrl = `https://next-line.onrender.com/profile?redirect_uri=${encodeURIComponent(liff.permanentLink.createUrl())}`;
+    const loginUrl = `https://next-line.onrender.com/profile?redirect_uri=${encodeURIComponent(liff?.permanentLink.createUrl())}`;
 
 
   useEffect(() => {
