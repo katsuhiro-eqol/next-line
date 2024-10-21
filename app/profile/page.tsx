@@ -5,6 +5,27 @@ import { useLiff } from '@/components/LiffProvider';
 
 
 export default function Profile() {
+  const { liff } = useLiff();
+
+  useEffect(() => {
+    if (liff?.isLoggedIn()) {
+      console.log("loginしました")
+    } else {
+        console.log("loginしてません")
+        console.log(liff?.getOS())
+        //liff?.login()
+    }
+  }, [liff]);
+
+  return (
+    <div>
+      profile
+    </div>
+  );
+}
+
+/*
+export default function Profile() {
   const [profile, setProfile] = useState(null);
   const { liff } = useLiff();
 
@@ -26,7 +47,7 @@ export default function Profile() {
     <div>
       {profile && (
         <>
-          {/* eslint-disable-next-line @next/next/no-img-element */},
+
           <img
             src={profile.pictureUrl}
             alt='profile'
@@ -57,3 +78,4 @@ export default function Profile() {
     </div>
   );
 }
+*/
