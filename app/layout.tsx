@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { LiffProvider } from "@/components/LiffProvider"
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -14,7 +15,9 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
-        {children}
+        <LiffProvider liffId={process.env.NEXT_PUBLIC_LIFF_ID || ''}>
+          {children}
+        </LiffProvider>
       </body>
     </html>
   );
