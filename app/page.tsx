@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <div>
       <div>Home</div>
-      <Link href="/profile">Profileページへ</Link>
+      <Link href="/login">Loginページへ</Link>
       </div>
 
   );

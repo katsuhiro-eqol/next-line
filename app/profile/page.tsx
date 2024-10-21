@@ -9,7 +9,9 @@ export default function Profile() {
 
   useEffect(() => {
     if (liff?.isLoggedIn()) {
-      console.log("loginしました")
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get('token');
+      console.log("token", token)
     } else {
         console.log("loginしてません")
         console.log(liff?.getOS())
