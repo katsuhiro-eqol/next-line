@@ -12,6 +12,7 @@ export default function Login() {
         console.log("loginしました")
         const urlParams = new URLSearchParams(window.location.search);
         console.log("params", urlParams)
+        redirect("/booking")
     } else {
         console.log("loginしてません")
         liff?.login()
