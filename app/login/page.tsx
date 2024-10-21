@@ -9,12 +9,7 @@ export default function Login() {
 
   useEffect(() => {
     if (liff?.isLoggedIn()) {
-        const loginUrl = `https://next-line.onrender.com/profile?redirect_uri=${encodeURIComponent(liff?.permanentLink.createUrl())}`;
-        liff?.openWindow({
-            url: loginUrl,
-            external: true
-        });
-
+        
     } else {
         console.log("loginしてません")
         console.log(liff?.getOS())
