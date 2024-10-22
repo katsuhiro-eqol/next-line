@@ -1,6 +1,6 @@
 'use client';
+import Link from 'next/link';
 import { useEffect } from 'react';
-import { redirect } from "next/navigation";
 import { useLiff } from '@/components/LiffProvider';
 
 
@@ -10,21 +10,23 @@ export default function Login() {
   useEffect(() => {
     if (liff?.isLoggedIn()) {
         console.log("loginしました")
-        const urlParams = new URLSearchParams(window.location.search);
-        console.log("params", urlParams)
-        redirect("/booking")
     } else {
         console.log("loginしてません")
-        liff?.login()
+        //liff?.login()
     }
   }, [liff]);
 
   return (
-    <div className="w-full h-hull flex justify-center bg-gray-300 ">
+    <div className="flex justify-center h-screen bg-gray-300 ">
       {(liff?.isLoggedIn()) ? (
-        <p>loading...</p>
+        <div>
+        <p>Home</p>
+        <Link href="/booking">予約ページへ</Link>
+        </div>
       ):(
-        <p>ログインしました</p>
+        <div className="fixed bottom-10 w-2/3 h-10 py-2 mx-2 text-center text-white bg-green-500 text-lg shadow-lg">
+        <Link href="/booking">予約ページへ</Link>
+        </div>
       )} 
 
     </div>

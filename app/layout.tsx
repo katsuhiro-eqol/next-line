@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body>
+      <body className="flex justify-center w-screen h-screen">
         <LiffProvider liffId={process.env.NEXT_PUBLIC_LIFF_ID || ''}>
           {children}
         </LiffProvider>
