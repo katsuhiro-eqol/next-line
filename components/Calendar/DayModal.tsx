@@ -8,8 +8,8 @@ import TimeModal from "@/components/Calendar/TimeModal";
 import { judgeAvailability, judgeCanReserve } from "@/service/functions";
 //import loadDayReservation from "@/service/loadDayReservation";
 
-const DayModal = ({day, shop, staff, events, showModal, setShowModal, openning, closing, time, user}:
-    {day:string,shop:string,staff:string,events:any[],showModal:boolean, setShowModal:(show: boolean) => void,openning:string,closing:string,time:number,user:string}) => {
+const DayModal = ({day, shopName, staff, events, showModal, setShowModal, openning, closing, time, user}:
+    {day:string,shopName:string|null,staff:string|null,events:any[],showModal:boolean, setShowModal:(show: boolean) => void,openning:string,closing:string,time:number,user:string}) => {
     const [isOpenTM, setIsOpenTM] = useState<boolean>(false)
     const [startTime, setStartTime] = useState<string>("")
 
@@ -76,7 +76,7 @@ const DayModal = ({day, shop, staff, events, showModal, setShowModal, openning, 
                 <div className="flex justify-center ">
                 <button className="mt-3 mb-2 border-spacing-2 border-2 rounded-sm bg-white" onClick={closeModal}>閉じる</button>
                 </div>
-                {isOpenTM && (<TimeModal setIsOpenTM={setIsOpenTM} setShowModal={setShowModal} startTime={startTime} day={day} shop={shop} staff={staff} time={time} user={user} events={events} openning={openning} closing={closing}/>)}
+                {isOpenTM && (<TimeModal setIsOpenTM={setIsOpenTM} setShowModal={setShowModal} startTime={startTime} day={day} shopName={shopName} staff={staff} time={time} user={user} events={events} openning={openning} closing={closing}/>)}
                 </div>
             </div>
         </>

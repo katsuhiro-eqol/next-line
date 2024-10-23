@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 import { useLiff } from '@/components/LiffProvider';
 
-
 export default function Login() {
     const { liff } = useLiff();
 

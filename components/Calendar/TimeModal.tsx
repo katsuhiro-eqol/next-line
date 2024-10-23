@@ -4,8 +4,8 @@ import reservation from "@/service/reservation"
 import { judgeAvailability, judgeCanReserve, setNewEvents } from "@/service/functions";
 import {dayAvailability} from "@/service/dayAvailability";
 
-const TimeModal = ({startTime, setIsOpenTM, day, shop, staff, setShowModal, time, user, events, openning, closing}:{
-    startTime:string,setIsOpenTM:(isOpenTM: boolean) => void, day:string, shop:string, staff:string, setShowModal:(showModal: boolean) => void,time:number, user:string, events:any[], openning:string,closing:string
+const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, time, user, events, openning, closing}:{
+    startTime:string,setIsOpenTM:(isOpenTM: boolean) => void, day:string, shopName:string|null, staff:string|null, setShowModal:(showModal: boolean) => void,time:number, user:string, events:any[], openning:string,closing:string
 }
 ) => {
     const [canReserve, setCanReserve] = useState<boolean>(true)
@@ -14,34 +14,37 @@ const TimeModal = ({startTime, setIsOpenTM, day, shop, staff, setShowModal, time
     };
 
     const booking = () => {
-    const data = {
-        user: user,
-        staff: staff,
-        shop: shop,
-        day: day,
-        start: day+"T"+start,
-        end: day+"T"+end
-    }
-    reservation(data)
-    setIsOpenTM(false)
-    setShowModal(false)
-    const updatedEvents = setNewEvents(events, data)
-    console.log("update",updatedEvents)
-    const judge = judgeAvailability(events, day, openning, closing, time)
-
-    if (!judge){
-        console.log("もう予約できません")
-        const obj = {
-            day: day,
-            shop: shop,
-            staff: staff,
-            available: judge
+        if (shopName && staff){
+            const data = {
+                user: user,
+                staff: staff,
+                shop: shopName,
+                day: day,
+                start: day+"T"+start,
+                end: day+"T"+end
+            }
+            reservation(data)
+            setIsOpenTM(false)
+            setShowModal(false)
+            const updatedEvents = setNewEvents(events, data)
+            console.log("update",updatedEvents)
+            const judge = judgeAvailability(events, day, openning, closing, time)
+        
+            if (!judge){
+                console.log("もう予約できません")
+                const obj = {
+                    day: day,
+                    shop: shopName,
+                    staff: staff,
+                    available: judge
+                }
+                dayAvailability(obj)
+            } else {
+                console.log("まだ予約できます")
+            }
+            };
         }
-        dayAvailability(obj)
-    } else {
-        console.log("まだ予約できます")
-    }
-    };
+
 
     const startSplit= startTime.split("T")[1].split(":")
     const start = startSplit[0]+":"+startSplit[1]
@@ -73,9 +76,9 @@ const TimeModal = ({startTime, setIsOpenTM, day, shop, staff, setShowModal, time
             <div>
             <p className="font-bold text-lg">予約確定画面</p>
             <br/>
-            <p>{shop}</p>
-            <p>{staff}</p>
-            <p>{day}</p>
+            <p>店舗：{shopName}</p>
+            <p>担当スタッフ：{staff}</p>
+            <p>日付：{day}</p>
             <p>{start}から{end}</p>
             <br/>
             <p>で予約しますか？</p>
@@ -90,7 +93,7 @@ const TimeModal = ({startTime, setIsOpenTM, day, shop, staff, setShowModal, time
             <div>
             <p className="font-bold text-lg">予約確定画面</p>
             <br/>
-            <p>{shop}</p>
+            <p>{shopName}</p>
             <p>{staff}</p>
             <p>{day}</p>
             <p>{start}から{end}</p>

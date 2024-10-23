@@ -1,16 +1,9 @@
 import { supabase } from "@/utils/supabase/supabase"
-
-type Reservation = {
-  user: string,
-  staff: string,
-  shop: string,
-  day: string,
-  start: string,
-  end: string
-}
+import { Reservation } from "@/type/type"
 
 
-export default async function Reservation(obj:Reservation){
+
+export default async function reservation(obj:Reservation){
     try {
         let { data: Reservation, error } = await supabase
           .from('reservation')

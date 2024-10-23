@@ -3,7 +3,7 @@ height: 100vh;
 }
 
 .past-day {
-background-color: hsla(0, 0%, 94%, 0.491);
+background-color: #888888;
 opacity: 0.2;
 }
 
@@ -64,3 +64,19 @@ opacity: 0.2;
     justify-content: center;
     align-items: center;
 }
+
+  .fc .fc-scrollgrid {
+    border-width: 0;
+  }
+
+  .fc .fc-scrollgrid-section > * {
+    border: none;
+  }
+
+  .fc .fc-scrollgrid-sync-table {
+    border: 1px;
+  }
+
+  .fc {
+    background-color: #ffffff;  /* 任意の色を指定 */
+  }
