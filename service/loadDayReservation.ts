@@ -1,8 +1,8 @@
 import { supabase } from "@/utils/supabase/supabase"
+import {Event} from "@/type/type"
 
-type Event = {title:string,start:string, end:string}
 
-export default async function loadDayReservation(day:string, shop:string, staff:string){
+export default async function loadDayReservation(day:string, shop:string, staff:string, userId:string){
 
     try {
         let { data: reservations, error } = await supabase
@@ -16,8 +16,13 @@ export default async function loadDayReservation(day:string, shop:string, staff:
         let dayReservation:Event[] = []
         if (reservations){
             reservations.map((reservation) => {
-                const data = {title: reservation["user"], start: reservation["start"], end: reservation["end"]}
-                dayReservation.push(data)
+                if (reservation["userId"] == userId){
+                    const data:Event = {title: reservation["user"], start: reservation["start"], end: reservation["end"], userId:reservation["userId"], backgroundColor:"green"}
+                    dayReservation.push(data)
+                } else {
+                    const data:Event = {title: reservation["user"], start: reservation["start"], end: reservation["end"], userId:reservation["userId"], backgroundColor:"blue"}
+                    dayReservation.push(data)
+                }
             })
         }
 

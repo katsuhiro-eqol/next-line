@@ -3,9 +3,10 @@ import { useState, useEffect } from "react"
 import reservation from "@/service/reservation"
 import { judgeAvailability, judgeCanReserve, setNewEvents } from "@/service/functions";
 import {dayAvailability} from "@/service/dayAvailability";
+import {Reservation} from "@/type/type"
 
-const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, time, user, events, openning, closing}:{
-    startTime:string,setIsOpenTM:(isOpenTM: boolean) => void, day:string, shopName:string|null, staff:string|null, setShowModal:(showModal: boolean) => void,time:number, user:string, events:any[], openning:string,closing:string
+const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, time, user, userId, events, openning, closing}:{
+    startTime:string,setIsOpenTM:(isOpenTM: boolean) => void, day:string, shopName:string|null, staff:string|null, setShowModal:(showModal: boolean) => void,time:number, user:string, userId:string, events:any[], openning:string,closing:string
 }
 ) => {
     const [canReserve, setCanReserve] = useState<boolean>(true)
@@ -15,8 +16,9 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
 
     const booking = () => {
         if (shopName && staff){
-            const data = {
+            const data:Reservation = {
                 user: user,
+                userId: userId,
                 staff: staff,
                 shop: shopName,
                 day: day,

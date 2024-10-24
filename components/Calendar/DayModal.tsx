@@ -5,12 +5,16 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import jaLocale from '@fullcalendar/core/locales/ja'
 import TimeModal from "@/components/Calendar/TimeModal";
+import Cancel from "@/components/Calendar/Cancel";
+import {Event} from "@/type/type"
 import { judgeAvailability, judgeCanReserve } from "@/service/functions";
 //import loadDayReservation from "@/service/loadDayReservation";
 
-const DayModal = ({day, shopName, staff, events, showModal, setShowModal, openning, closing, time, user}:
-    {day:string,shopName:string|null,staff:string|null,events:any[],showModal:boolean, setShowModal:(show: boolean) => void,openning:string,closing:string,time:number,user:string}) => {
+const DayModal = ({day, shopName, staff, events, showModal, setShowModal, openning, closing, time, user, userId}:
+    {day:string,shopName:string|null,staff:string|null,events:any[],showModal:boolean, setShowModal:(show: boolean) => void,openning:string,closing:string,time:number,user:string, userId:string}) => {
     const [isOpenTM, setIsOpenTM] = useState<boolean>(false)
+    const [cancelFlag, setCancelFlag] = useState<boolean>(false)
+    const [cancelEvent, setCancelEvent] = useState<Event | null>(null)
     const [startTime, setStartTime] = useState<string>("")
 
     //予約単位を1h=3600000msとした場合。施術メニューによって変更することもできる
@@ -31,12 +35,21 @@ const DayModal = ({day, shopName, staff, events, showModal, setShowModal, openni
     };
     
     const handleEventClick = (arg:any) => {
-        const user = arg.event._def.title
-        console.log(arg.event._def.title)
-        console.log(typeof(arg.event._instance.range.start))
-        const start = new Date(arg.event._instance.range.start)
-        console.log(start)
-        alert("既に予約が入っています");
+        const title = arg.event._def.title
+        const startStr = new Date(arg.event._instance.range.start).toISOString()
+        const startArray = startStr.split(":")
+        console.log(startArray[0]+":"+startArray[1])
+        const selected = events.filter((obj) => {
+            return obj.title===title && obj.start===startArray[0]+":"+startArray[1]
+        })
+        if (selected.length != 0 && selected[0].userId === userId){
+            alert("予約をキャンセルしますか？");
+            setCancelFlag(true)
+            setStartTime(startStr)
+            setCancelEvent(selected[0])
+        } else {
+            alert("既に予約されています");
+        }
     };
 
     return (
@@ -76,7 +89,8 @@ const DayModal = ({day, shopName, staff, events, showModal, setShowModal, openni
                 <div className="flex justify-center ">
                 <button className="mt-3 mb-2 border-spacing-2 border-2 rounded-sm bg-white" onClick={closeModal}>閉じる</button>
                 </div>
-                {isOpenTM && (<TimeModal setIsOpenTM={setIsOpenTM} setShowModal={setShowModal} startTime={startTime} day={day} shopName={shopName} staff={staff} time={time} user={user} events={events} openning={openning} closing={closing}/>)}
+                {isOpenTM && (<TimeModal setIsOpenTM={setIsOpenTM} setShowModal={setShowModal} startTime={startTime} day={day} shopName={shopName} staff={staff} time={time} user={user} userId={userId} events={events} openning={openning} closing={closing}/>)}
+                {cancelFlag && (<Cancel setCancelFlag={setCancelFlag} setShowModal={setShowModal} cancelEvent={cancelEvent} day={day} shopName={shopName} staff={staff} time={time} user={user} userId={userId} events={events} openning={openning} closing={closing}/>)}
                 </div>
             </div>
         </>

@@ -11,7 +11,7 @@ import { loadDayAvailability } from "@/service/dayAvailability";
 import { useLiff } from '@/components/LiffProvider';
 import '@/components/Calendar/styles.css';
 import SelectShop from "@/components/SelectShop";
-import {Shop} from "@/type/type"
+import {Shop, Event} from "@/type/type"
 
 
 export default function Booking() {
@@ -27,12 +27,11 @@ export default function Booking() {
     const [flag, setFrag] = useState<boolean>(false)
     const [time, setTime] = useState<number>(3600000)//１サービスあたりの時間
     const [user, setUser] = useState<string>("me")
-    //const [userId, setUserId] = useState<string>("xxx")
+    const [openning, setOpenning] = useState<string>("09:00")
+    const [closing, setClosing] = useState<string>("17:00")
+    const [userId, setUserId] = useState<string>("xxxxxx")
     const [events, setEvents] = useState<any[]>([])
     const [availability, setAvailability] = useState<any[]>([])
-
-    const openning = "09:00"
-    const closing = "17:00"
 
     const loadShops = async () => {
         const data = await getShops()
@@ -41,15 +40,10 @@ export default function Booking() {
         }
     }
 
-    const loadReservations = async (day:string,shopName:string,staff:string) => {
-        const data = await loadDayReservation(day, shopName, staff)
-        let events = []
+    const loadReservations = async (day:string,shopName:string,staff:string,userId:string) => {
+        const data = await loadDayReservation(day, shopName, staff,userId)
         if (data){
-            for (let i = 0; i < data.length; i++){
-                events.push(data[i])
-                console.log("i, data]i]: ", data[i])
-            }
-            setEvents(events)
+            setEvents(data)
         } else {
             setEvents([])
         }
@@ -60,6 +54,7 @@ export default function Booking() {
         const todayString = today[0] + "-" + today[1] + "-" + today[2]
         const availability = await loadDayAvailability(todayString,shopName,staff)
         if (availability){
+            console.log("avail",availability)
             setAvailability(availability)
         } else {
             setAvailability([])
@@ -70,9 +65,19 @@ export default function Booking() {
         setShowModal(true)
         setDay(arg.dateStr)
         if (shopName && staff){
-            loadReservations(arg.dateStr,shopName,staff)
+            loadReservations(arg.dateStr,shopName,staff,userId)
         }
       };
+
+    const handleShopClick = () => {
+        setShop(null)
+        setShopName(null)
+        setStaff(null)
+    }
+
+    const handleStaffClick = () => {
+        setStaff(null)
+    }
 
     const renderPastDays = (arg:any) => {
     const today = new Date();
@@ -84,7 +89,6 @@ export default function Booking() {
     };
 
     useEffect(() => {
-        //load_availability(shop, staff)
         loadShops()
     },[])
 
@@ -97,12 +101,15 @@ export default function Booking() {
       if (shop){
         setShopName(shop.name)
         setStaffs(shop.staffs)
+        setOpenning(shop.openning)
+        setClosing(shop.closing)
       }else{
         setShopName(null)
         setStaff(null)
       }
       if (shop && staff){
         setFrag(true)
+        load_availability(shop.name, staff)
       } else {
         setFrag(false)
       }
@@ -122,7 +129,7 @@ export default function Booking() {
 
     useEffect(() => {
         console.log("user", user)
-        //console.log("userId", userId)
+        console.log("userId", userId)
     }, [user])
 
     useEffect(() => {
@@ -132,14 +139,14 @@ export default function Booking() {
                 .then((profile) => {
                     const name = profile.displayName
                     setUser(name)
-                    //setUserId(profile.userId)
+                    setUserId(profile.userId)
                 })
                 .catch((err) => {
                     console.log("error", err);
                 });
         } else {
             console.log("loginしてません")
-            liff?.login()
+            //liff?.login()
         }
       }, [liff]);
 
@@ -153,12 +160,12 @@ export default function Booking() {
         <div className="w-full h-full bg-orange-100">
             <div className="mt-3 mb-2 font-bold text-xl text-center">予約カレンダー</div>
             <div className="flex justify-between px-12 mb-5">
-                <p className="font-bold">店舗: {shopName}</p>
-                <p className="font-bold">担当スタッフ: {staff}</p>
+                <p className="font-bold text-sm">店舗: {shopName}</p>
+                <p className="font-bold text-sm">担当スタッフ: {staff}</p>
             </div>
             <div className="m-5 h-auto">
             {showModal ? (
-            <DayModal showModal={showModal} setShowModal={setShowModal} day={day} shopName={shopName} staff={staff} events={events} openning={openning} closing={closing} time={time} user={user}/>
+            <DayModal showModal={showModal} setShowModal={setShowModal} day={day} shopName={shopName} staff={staff} events={events} openning={openning} closing={closing} time={time} user={user} userId={userId}/>
             ):(
             <div className="calendar-container">
             <FullCalendar
@@ -171,6 +178,10 @@ export default function Booking() {
             dateClick={handleDateClick}
             events={availability}
             />
+            <div className="flex justify-between px-5 mt-5">
+                <button onClick={handleShopClick} className="w-1/3 text-sm border-2 bg-lime-200">店舗変更</button>
+                <button onClick={handleStaffClick} className="w-1/3 text-sm border-2 bg-lime-200">担当変更</button>
+            </div>
             </div>
             )}
             </div>
@@ -182,6 +193,20 @@ export default function Booking() {
   }
 
   /*
+      const loadReservations = async (day:string,shopName:string,staff:string) => {
+        const data = await loadDayReservation(day, shopName, staff)
+        let events:Event[] = []
+        if (data){
+            for (let i = 0; i < data.length; i++){
+                events.push(data[i])
+                console.log("i, data]i]: ", data[i])
+            }
+            setEvents(events)
+        } else {
+            setEvents([])
+        }
+    }
+
               <div className="w-full h-full bg-orange-100">     
             <div className="mt-3 mb-2 font-bold text-xl text-center">予約カレンダー</div>
             <div className="flex justify-between px-12 mb-5">

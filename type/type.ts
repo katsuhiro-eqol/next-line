@@ -10,9 +10,18 @@ export type Shop = {
 
 export type Reservation = {
     user: string,
+    userId:string,
     staff: string,
     shop: string,
     day: string,
     start: string,
     end: string
   }
+
+export type Event = {
+    title: string,
+    start: string, 
+    end: string,
+    userId: string,
+    backgroundColor:string
+}
