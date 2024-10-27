@@ -5,7 +5,8 @@ export type Shop = {
     address:string, photos: string[], 
     staffs:string[], 
     openning:string, 
-    closing:string
+    closing:string,
+    staff_photo:Staff_Photo
 }
 
 export type Reservation = {
@@ -24,4 +25,8 @@ export type Event = {
     end: string,
     userId: string,
     backgroundColor:string
+}
+
+type Staff_Photo = {
+    [key: string]: string
 }

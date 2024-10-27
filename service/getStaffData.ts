@@ -1,12 +1,15 @@
 import { supabase } from "@/utils/supabase/supabase"
 
-export default async function getShops(){
+/*
+export async function getStaffPhotos(name:string, shop:string){
     try {
-        let { data: shops, error } = await supabase
+        let { data: staffs, error } = await supabase
           .from('shops')
           .select("*")
-        if (shops){
-            return shops
+          .eq("name",name)
+          .eq("shop", shop)
+        if (staffs){
+            return staffs.photos
         } else {
             return []
         }
@@ -15,3 +18,4 @@ export default async function getShops(){
         return null
       }
 }
+      */

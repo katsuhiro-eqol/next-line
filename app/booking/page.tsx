@@ -154,7 +154,7 @@ export default function Booking() {
       <>
       {!flag ? (
       <div className="w-full h-full bg-orange-100">    
-        <SelectShop shop={shop} setShop={setShop} shops={shops} staffs={staffs} setStaff={setStaff}/>
+        <SelectShop shop={shop} setShop={setShop} shops={shops} staffs={staffs} setStaff={setStaff} />
       </div>
       ):(
         <div className="w-full h-full bg-orange-100">
