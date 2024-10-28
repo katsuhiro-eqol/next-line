@@ -1,16 +1,18 @@
 "use client"
 import { useState, useEffect } from "react"
 import reservation from "@/service/reservation"
-import issueChannelAccessToken from "@/service/Line/issueAccessToken";
 import { judgeAvailability, judgeCanReserve, setNewEvents } from "@/service/functions";
 import {dayAvailability} from "@/service/dayAvailability";
+import { useLiff } from '@/components/LiffProvider';
 import {Reservation} from "@/type/type"
 
 const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, time, user, userId, events, openning, closing}:{
     startTime:string,setIsOpenTM:(isOpenTM: boolean) => void, day:string, shopName:string|null, staff:string|null, setShowModal:(showModal: boolean) => void,time:number, user:string, userId:string, events:any[], openning:string,closing:string
 }
 ) => {
+    const { liff } = useLiff();
     const [canReserve, setCanReserve] = useState<boolean>(true)
+    const [token, setToken] = useState<string | null>(null)
     const closeModal = () => {
         setIsOpenTM(false);
     };
@@ -27,15 +29,13 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
                 end: day+"T"+end
             }
             reservation(data)
+
             setIsOpenTM(false)
             setShowModal(false)
             const updatedEvents = setNewEvents(events, data)
             console.log("update",updatedEvents)
             const judge = judgeAvailability(events, day, openning, closing, time)
 
-            const accessToken = issueChannelAccessToken()
-            console.log("access token", accessToken)
-        
             if (!judge){
                 console.log("もう予約できません")
                 const obj = {
@@ -69,6 +69,17 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
             setCanReserve(false)
         }
     },[])
+
+    useEffect(() => {
+        if (liff?.isLoggedIn()) {
+            const accessToken = liff.getAccessToken()
+            setToken(accessToken)
+        }
+    }, [liff])
+    
+    useEffect(() => {
+        console.log("token", token)
+    },[token])
 
     useEffect(() => {
         console.log("canReserve", canReserve)
