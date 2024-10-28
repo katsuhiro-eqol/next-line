@@ -1,6 +1,7 @@
 "use client"
 import { useState, useEffect } from "react"
 import reservation from "@/service/reservation"
+import issueChannelAccessToken from "@/service/Line/issueAccessToken";
 import { judgeAvailability, judgeCanReserve, setNewEvents } from "@/service/functions";
 import {dayAvailability} from "@/service/dayAvailability";
 import {Reservation} from "@/type/type"
@@ -31,6 +32,9 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
             const updatedEvents = setNewEvents(events, data)
             console.log("update",updatedEvents)
             const judge = judgeAvailability(events, day, openning, closing, time)
+
+            const accessToken = issueChannelAccessToken()
+            console.log("access token", accessToken)
         
             if (!judge){
                 console.log("もう予約できません")
