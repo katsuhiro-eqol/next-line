@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import reservation from "@/service/reservation"
 import { judgeAvailability, judgeCanReserve, setNewEvents } from "@/service/functions";
 import {dayAvailability} from "@/service/dayAvailability";
+import issueChannelAccessToken from "@/service/Line/issueAccessToken";
 import { useLiff } from '@/components/LiffProvider';
 import {Reservation} from "@/type/type"
 
@@ -29,7 +30,7 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
                 end: day+"T"+end
             }
             reservation(data)
-
+            issueChannelAccessToken()
             setIsOpenTM(false)
             setShowModal(false)
             const updatedEvents = setNewEvents(events, data)
@@ -76,7 +77,7 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
             setToken(accessToken)
         }
     }, [liff])
-    
+
     useEffect(() => {
         console.log("token", token)
     },[token])
