@@ -4,8 +4,10 @@ import reservation from "@/service/reservation"
 import { judgeAvailability, judgeCanReserve, setNewEvents } from "@/service/functions";
 import {dayAvailability} from "@/service/dayAvailability";
 import issueChannelAccessToken from "@/service/Line/issueAccessToken";
+import issueNotifierAccessToken from "@/service/Line/issueNotifierToken";
+import sendServiceMessage from "@/service/Line/sendServiceMessage";
 import { useLiff } from '@/components/LiffProvider';
-import {Reservation} from "@/type/type"
+import {Reservation, Message} from "@/type/type"
 
 const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, time, user, userId, events, openning, closing}:{
     startTime:string,setIsOpenTM:(isOpenTM: boolean) => void, day:string, shopName:string|null, staff:string|null, setShowModal:(showModal: boolean) => void,time:number, user:string, userId:string, events:any[], openning:string,closing:string
@@ -13,10 +15,27 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
 ) => {
     const { liff } = useLiff();
     const [canReserve, setCanReserve] = useState<boolean>(true)
-    const [token, setToken] = useState<string | null>(null)
+    const [liffToken, setLiffToken] = useState<string | null>(null)
+    const [accessToken, setAccessToken] = useState<string | null>(null)
     const closeModal = () => {
         setIsOpenTM(false);
     };
+
+    const issueToken = async () => {
+        const token =await issueChannelAccessToken()
+        console.log(token)
+        setAccessToken(token.access_token)
+    }
+
+    const notifierToken = async () => {
+        if (liffToken && accessToken){
+            const notifier_token = await issueNotifierAccessToken(liffToken, accessToken)
+            console.log("notifier", notifier_token)
+            return notifier_token
+        } else {
+            return null
+        }
+    }
 
     const booking = () => {
         if (shopName && staff){
@@ -30,7 +49,14 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
                 end: day+"T"+end
             }
             reservation(data)
-            issueChannelAccessToken()
+
+            const notifier = notifierToken()
+            if (notifier){
+                console.log("notification", notifier)
+            }
+
+            sendMessage()
+
             setIsOpenTM(false)
             setShowModal(false)
             const updatedEvents = setNewEvents(events, data)
@@ -49,8 +75,24 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
             } else {
                 console.log("まだ予約できます")
             }
-            };
+        };
+    }
+
+    const sendMessage = () => {
+        const message:Message = {
+            templateName:"Booking confirmed (detailed)_ja",
+            params:{
+                date:day+" "+start,
+                address:"",
+                shop_name:shopName!,
+                charge_name:staff!,
+                reservation_contents:"カット",
+                btn1_url:"https://next-line.onrender.com"
+            },
+            notificationToken:""
         }
+        console.log(message)
+    }
 
 
     const startSplit= startTime.split("T")[1].split(":")
@@ -69,18 +111,24 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
         } else {
             setCanReserve(false)
         }
+
+        issueToken()
     },[])
 
     useEffect(() => {
         if (liff?.isLoggedIn()) {
             const accessToken = liff.getAccessToken()
-            setToken(accessToken)
+            setLiffToken(accessToken)
         }
     }, [liff])
 
     useEffect(() => {
-        console.log("token", token)
-    },[token])
+        console.log("token", liffToken)
+    },[liffToken])
+
+    useEffect(() => {
+        console.log("access_token", accessToken)
+    },[accessToken])
 
     useEffect(() => {
         console.log("canReserve", canReserve)
@@ -130,3 +178,26 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
 }
 
 export default TimeModal;
+
+        /*
+        try {
+            const response = await fetch("https://api.line.me/oauth2/v3/token", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: new URLSearchParams({
+                    grant_type: "client_credentials",
+                    client_id: process.env.NEXT_PUBLIC_LINE_CHANNEL_ID!,
+                    client_secret: process.env.NEXT_PUBLIC_LINE_CHANNEL_SECRET!,
+                }),
+                });               
+
+                const jsonData = await response.json();
+                if (jsonData){
+                setAccessToken(jsonData.access_token)
+                }
+        } catch(error) {
+            console.error('Error fetching data:', error);
+        }
+        */

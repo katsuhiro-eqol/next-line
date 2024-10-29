@@ -27,6 +27,19 @@ export type Event = {
     backgroundColor:string
 }
 
-type Staff_Photo = {
+export type Staff_Photo = {
     [key: string]: string
+}
+
+export type Message = {
+    templateName:string,
+    params:{
+        date:string,
+        address:string,
+        shop_name:string,
+        charge_name:string,
+        reservation_contents:string,
+        btn1_url:string
+    },
+    notificationToken:string
 }
