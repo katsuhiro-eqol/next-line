@@ -15,10 +15,10 @@ export default async function sendServiceMessage(accessToken:string, message:Mes
             if (jsonData){
             return jsonData
             } else {
-                {access_token:""}
+               return {notificationToken:""}
             }
     } catch(error) {
         console.error('Error fetching data:', error);
-        return {access_token:""}
+        return {notificationToke:""}
     }
   }

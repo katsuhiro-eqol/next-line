@@ -43,3 +43,16 @@ export type Message = {
     },
     notificationToken:string
 }
+
+export type ChannelAccessToken = {
+    token_type: "Bearer",
+    access_token: string,
+    expires_in: number
+}
+
+export type NotificationTolen ={
+    notificationToken: string,
+    expiresIn: number,
+    remainingCount: number,
+    sessionId: string
+}

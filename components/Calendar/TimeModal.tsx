@@ -7,7 +7,7 @@ import issueChannelAccessToken from "@/service/Line/issueAccessToken";
 import issueNotifierAccessToken from "@/service/Line/issueNotifierToken";
 import sendServiceMessage from "@/service/Line/sendServiceMessage";
 import { useLiff } from '@/components/LiffProvider';
-import {Reservation, Message} from "@/type/type"
+import {Reservation, Message, NotificationTolen} from "@/type/type"
 
 const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, time, user, userId, events, openning, closing}:{
     startTime:string,setIsOpenTM:(isOpenTM: boolean) => void, day:string, shopName:string|null, staff:string|null, setShowModal:(showModal: boolean) => void,time:number, user:string, userId:string, events:any[], openning:string,closing:string
@@ -29,7 +29,7 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
 
     const notifierToken = async () => {
         if (liffToken && accessToken){
-            const notifier_token = await issueNotifierAccessToken(liffToken, accessToken)
+            const notifier_token:NotificationTolen = await issueNotifierAccessToken(liffToken, accessToken)
             console.log("notifier", notifier_token)
             return notifier_token
         } else {
@@ -53,9 +53,8 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
             const notifier = notifierToken()
             if (notifier){
                 console.log("notification", notifier)
+                //sendMessage(notifier.notificationToken)
             }
-
-            sendMessage()
 
             setIsOpenTM(false)
             setShowModal(false)
@@ -78,20 +77,23 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
         };
     }
 
-    const sendMessage = () => {
+    const sendMessage = (notificationToken:string) => {
+        if (accessToken){
         const message:Message = {
             templateName:"Booking confirmed (detailed)_ja",
             params:{
                 date:day+" "+start,
-                address:"",
+                address:"藤枝市",
                 shop_name:shopName!,
                 charge_name:staff!,
                 reservation_contents:"カット",
                 btn1_url:"https://next-line.onrender.com"
             },
-            notificationToken:""
+            notificationToken:notificationToken
         }
         console.log(message)
+        sendServiceMessage(accessToken, message)
+        }
     }
 
 
