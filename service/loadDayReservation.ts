@@ -17,10 +17,10 @@ export default async function loadDayReservation(day:string, shop:string, staff:
         if (reservations){
             reservations.map((reservation) => {
                 if (reservation["userId"] == userId){
-                    const data:Event = {title: reservation["user"], start: reservation["start"], end: reservation["end"], userId:reservation["userId"], backgroundColor:"green"}
+                    const data:Event = {title: reservation["user"], start: reservation["start"], end: reservation["end"], userId:reservation["userId"], backgroundColor:"#4169e1"}
                     dayReservation.push(data)
                 } else {
-                    const data:Event = {title: reservation["user"], start: reservation["start"], end: reservation["end"], userId:reservation["userId"], backgroundColor:"blue"}
+                    const data:Event = {title: "", start: reservation["start"], end: reservation["end"], userId:reservation["userId"], backgroundColor:"#ff00ff"}
                     dayReservation.push(data)
                 }
             })
