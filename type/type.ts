@@ -50,7 +50,7 @@ export type ChannelAccessToken = {
     expires_in: number
 }
 
-export type NotificationTolen ={
+export type NotificationToken ={
     notificationToken: string,
     expiresIn: number,
     remainingCount: number,

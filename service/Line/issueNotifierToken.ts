@@ -1,4 +1,4 @@
-export default async function issueNotifierAccessToken(liffToken:string, accessToken:string) {
+export default async function issueNotifierToken(liffToken:string, accessToken:string) {
     try {
         const response = await fetch("https://api.line.me/message/v3/notifier/token", {
             method: "POST",
@@ -15,10 +15,10 @@ export default async function issueNotifierAccessToken(liffToken:string, accessT
             if (jsonData){
                 return jsonData
             } else {
-                return {notificationToken:""}
+                return null
             }
     } catch(error) {
         console.error('Error fetching data:', error);
-        return {notificationToken:""}
+        return null
     }
   }

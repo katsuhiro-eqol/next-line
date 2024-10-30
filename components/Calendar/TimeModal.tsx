@@ -4,10 +4,10 @@ import reservation from "@/service/reservation"
 import { judgeAvailability, judgeCanReserve, setNewEvents } from "@/service/functions";
 import {dayAvailability} from "@/service/dayAvailability";
 import issueChannelAccessToken from "@/service/Line/issueAccessToken";
-import issueNotifierAccessToken from "@/service/Line/issueNotifierToken";
+import issueNotifierToken from "@/service/Line/issueNotifierToken";
 import sendServiceMessage from "@/service/Line/sendServiceMessage";
 import { useLiff } from '@/components/LiffProvider';
-import {Reservation, Message, NotificationTolen} from "@/type/type"
+import {Reservation, Message, NotificationToken} from "@/type/type"
 
 const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, time, user, userId, events, openning, closing}:{
     startTime:string,setIsOpenTM:(isOpenTM: boolean) => void, day:string, shopName:string|null, staff:string|null, setShowModal:(showModal: boolean) => void,time:number, user:string, userId:string, events:any[], openning:string,closing:string
@@ -17,6 +17,7 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
     const [canReserve, setCanReserve] = useState<boolean>(true)
     const [liffToken, setLiffToken] = useState<string | null>(null)
     const [accessToken, setAccessToken] = useState<string | null>(null)
+    const [notifier, setNotifier] = useState<NotificationToken | null>(null)
     const closeModal = () => {
         setIsOpenTM(false);
     };
@@ -27,13 +28,28 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
         setAccessToken(token.access_token)
     }
 
-    const notifierToken = async () => {
+    const sendMessage = async () => {
         if (liffToken && accessToken){
-            const notifier_token:NotificationTolen = await issueNotifierAccessToken(liffToken, accessToken)
+            const notifier_token:NotificationToken = await issueNotifierToken(liffToken, accessToken)
             console.log("notifier", notifier_token)
-            return notifier_token
+            console.log("notificationToken", notifier_token.notificationToken)
+            if (notifier_token.notificationToken){
+                const message:Message = {
+                    templateName:"book_request_d_b_ja",
+                    params:{
+                        date:day+" "+ start,
+                        address:"----",
+                        shop_name:shopName!,
+                        charge_name:staff!,
+                        reservation_contents:"カット",
+                        btn1_url:"https://next-line.onrender.com"
+                    },
+                    notificationToken: notifier_token.notificationToken
+                }
+                sendServiceMessage(accessToken, message)
+            }
         } else {
-            return null
+            console.log("送信失敗")
         }
     }
 
@@ -49,13 +65,7 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
                 end: day+"T"+end
             }
             reservation(data)
-
-            const notifier = notifierToken()
-            if (notifier){
-                console.log("notification", notifier)
-                //sendMessage(notifier.notificationToken)
-            }
-
+            sendMessage()
             setIsOpenTM(false)
             setShowModal(false)
             const updatedEvents = setNewEvents(events, data)
@@ -77,13 +87,14 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
         };
     }
 
+    /*
     const sendMessage = (notificationToken:string) => {
         if (accessToken){
         const message:Message = {
-            templateName:"Booking confirmed (detailed)_ja",
+            templateName:"book_request_d_b_ja",
             params:{
                 date:day+" "+start,
-                address:"藤枝市",
+                address:"----",
                 shop_name:shopName!,
                 charge_name:staff!,
                 reservation_contents:"カット",
@@ -95,7 +106,7 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
         sendServiceMessage(accessToken, message)
         }
     }
-
+    */
 
     const startSplit= startTime.split("T")[1].split(":")
     const start = startSplit[0]+":"+startSplit[1]
