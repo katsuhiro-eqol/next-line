@@ -42,11 +42,13 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
                         shop_name:shopName!,
                         charge_name:staff!,
                         reservation_contents:"カット",
-                        btn1_url:"https://next-line.onrender.com"
+                        btn1_url:"https://next-line.onrender.com",
+                        btn3_url:`https://next-line.onrender.com/cancel?userId=${userId}&shopName=${shopName}&staff=${staff}&day=${day}&start=${start}&end=${end}`
                     },
                     notificationToken: notifier_token.notificationToken
                 }
-                sendServiceMessage(accessToken, message)
+                const postData = await sendServiceMessage(accessToken, message)
+                console.log(postData)
             }
         } else {
             console.log("送信失敗")

@@ -20,7 +20,7 @@ export default async function loadDayReservation(day:string, shop:string, staff:
                     const data:Event = {title: reservation["user"], start: reservation["start"], end: reservation["end"], userId:reservation["userId"], backgroundColor:"#4169e1"}
                     dayReservation.push(data)
                 } else {
-                    const data:Event = {title: "", start: reservation["start"], end: reservation["end"], userId:reservation["userId"], backgroundColor:"#ff00ff"}
+                    const data:Event = {title: "他ユーザー予約済み", start: reservation["start"], end: reservation["end"], userId:reservation["userId"], backgroundColor:"#ff00ff"}
                     dayReservation.push(data)
                 }
             })

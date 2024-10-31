@@ -39,7 +39,8 @@ export type Message = {
         shop_name:string,
         charge_name:string,
         reservation_contents:string,
-        btn1_url:string
+        btn1_url:string,
+        btn3_url:string
     },
     notificationToken:string
 }
