@@ -6,6 +6,7 @@ import {dayAvailability} from "@/service/dayAvailability";
 import issueChannelAccessToken from "@/service/Line/issueAccessToken";
 import issueNotifierToken from "@/service/Line/issueNotifierToken";
 import sendServiceMessage from "@/service/Line/sendServiceMessage";
+import {loadNotificationInformation} from "@/service/Line/notificationInfomation"
 import { useLiff } from '@/components/LiffProvider';
 import {Reservation, Message, NotificationToken} from "@/type/type"
 
@@ -21,6 +22,7 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
     const closeModal = () => {
         setIsOpenTM(false);
     };
+    const notification = 'f728fc92-9a60-91c7-6699-688856bd3967'
 
     const issueToken = async () => {
         const token =await issueChannelAccessToken()
@@ -28,6 +30,29 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
         setAccessToken(token.access_token)
     }
 
+    const sendMessage = async () => {
+        if (liffToken && accessToken){
+            const message:Message = {
+                templateName:"book_request_d_b_ja",
+                params:{
+                    date:day+" "+ start,
+                    address:"----",
+                    shop_name:shopName!,
+                    charge_name:staff!,
+                    reservation_contents:"カット",
+                    btn1_url:"https://next-line.onrender.com",
+                    btn3_url:`https://next-line.onrender.com/cancel?userId=${userId}&shopName=${shopName}&staff=${staff}&day=${day}&start=${start}&end=${end}`
+                },
+                notificationToken: notification
+            }
+            const postData = await sendServiceMessage(accessToken, message)
+            console.log("postData",postData)
+        } else {
+            console.log("送信失敗")
+        }
+    }
+
+    /*
     const sendMessage = async () => {
         if (liffToken && accessToken){
             const notifier_token:NotificationToken = await issueNotifierToken(liffToken, accessToken)
@@ -54,6 +79,7 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
             console.log("送信失敗")
         }
     }
+    */
 
     const booking = () => {
         if (shopName && staff){
@@ -88,27 +114,6 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
             }
         };
     }
-
-    /*
-    const sendMessage = (notificationToken:string) => {
-        if (accessToken){
-        const message:Message = {
-            templateName:"book_request_d_b_ja",
-            params:{
-                date:day+" "+start,
-                address:"----",
-                shop_name:shopName!,
-                charge_name:staff!,
-                reservation_contents:"カット",
-                btn1_url:"https://next-line.onrender.com"
-            },
-            notificationToken:notificationToken
-        }
-        console.log(message)
-        sendServiceMessage(accessToken, message)
-        }
-    }
-    */
 
     const startSplit= startTime.split("T")[1].split(":")
     const start = startSplit[0]+":"+startSplit[1]

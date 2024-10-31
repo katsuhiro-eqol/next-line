@@ -57,3 +57,10 @@ export type NotificationToken ={
     remainingCount: number,
     sessionId: string
 }
+
+export type ServiceNotificationToken = {
+    token: string;
+    issuedAt: Date;
+    expiresAt: Date;
+    isActive: boolean;
+}
