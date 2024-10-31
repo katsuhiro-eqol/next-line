@@ -19,6 +19,19 @@ export async function loadNotificationInformation(userId:string){
       }
 }
 
-export async function saveNotificationInformation(notificationToken:NotificationToken){
+export async function saveNotificationInformation(user:string,userId:string,notificationToken:string,remainingCount:number){
+  const obj = {
+    userName:user,
+    userId:userId,
+    notificationToken:notificationToken,
+    remainingCount:remainingCount
+  }
 
+  try {
+    let { data: notification, error } = await supabase
+      .from('userInformation')
+      .insert(obj)
+  } catch (error) {
+    console.log(error)
+  }
 }

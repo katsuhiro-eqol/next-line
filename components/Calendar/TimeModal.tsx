@@ -6,7 +6,7 @@ import {dayAvailability} from "@/service/dayAvailability";
 import issueChannelAccessToken from "@/service/Line/issueAccessToken";
 import issueNotifierToken from "@/service/Line/issueNotifierToken";
 import sendServiceMessage from "@/service/Line/sendServiceMessage";
-import {loadNotificationInformation} from "@/service/Line/notificationInfomation"
+import {saveNotificationInformation} from "@/service/Line/notificationInfomation"
 import { useLiff } from '@/components/LiffProvider';
 import {Reservation, Message, NotificationToken} from "@/type/type"
 
@@ -74,6 +74,7 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
                 console.log(postData.notificationToken)
 
                 booking(postData.notificationToken)
+                saveNotificationInformation(user, userId, postData.notificationToken, postData.remainingCount)
                    
             }
         } else {
