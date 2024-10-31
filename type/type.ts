@@ -16,7 +16,8 @@ export type Reservation = {
     shop: string,
     day: string,
     start: string,
-    end: string
+    end: string,
+    continuousNotificationToken:string
   }
 
 export type Event = {
@@ -55,11 +56,4 @@ export type NotificationToken ={
     expiresIn: number,
     remainingCount: number,
     sessionId: string
-}
-
-export type ServiceNotificationToken = {
-    token: string;
-    issuedAt: Date;
-    expiresAt: Date;
-    isActive: boolean;
 }

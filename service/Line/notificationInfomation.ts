@@ -18,3 +18,7 @@ export async function loadNotificationInformation(userId:string){
         return null
       }
 }
+
+export async function saveNotificationInformation(notificationToken:NotificationToken){
+
+}

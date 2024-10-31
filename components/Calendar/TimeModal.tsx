@@ -22,7 +22,6 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
     const closeModal = () => {
         setIsOpenTM(false);
     };
-    const notification = 'f728fc92-9a60-91c7-6699-688856bd3967'
 
     const issueToken = async () => {
         const token =await issueChannelAccessToken()
@@ -30,6 +29,7 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
         setAccessToken(token.access_token)
     }
 
+    /*
     const sendMessage = async () => {
         if (liffToken && accessToken){
             const message:Message = {
@@ -50,9 +50,8 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
             console.log("送信失敗")
         }
     }
+    */
 
-    /*
-    btn3_url:`https://next-line.onrender.com/cancel?userId=${userId}&shopName=${shopName}&staff=${staff}&day=${day}&start=${start}&end=${end}`
     const sendMessage = async () => {
         if (liffToken && accessToken){
             const notifier_token:NotificationToken = await issueNotifierToken(liffToken, accessToken)
@@ -68,20 +67,22 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
                         charge_name:staff!,
                         reservation_contents:"カット",
                         btn1_url:"https://next-line.onrender.com",
-                        btn3_url:`https://next-line.onrender.com/cancel?userId=${userId}&shopName=${shopName}&staff=${staff}&day=${day}&start=${start}&end=${end}`
                     },
                     notificationToken: notifier_token.notificationToken
                 }
                 const postData = await sendServiceMessage(accessToken, message)
-                console.log(postData)
+                console.log(postData.notificationToken)
+
+                booking(postData.notificationToken)
+                   
             }
         } else {
             console.log("送信失敗")
         }
     }
-    */
 
-    const booking = () => {
+
+    const booking = (continuousNotificationToken:string) => {
         if (shopName && staff){
             const data:Reservation = {
                 user: user,
@@ -90,10 +91,10 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
                 shop: shopName,
                 day: day,
                 start: day+"T"+start,
-                end: day+"T"+end
+                end: day+"T"+end,
+                continuousNotificationToken:continuousNotificationToken
             }
             reservation(data)
-            sendMessage()
             setIsOpenTM(false)
             setShowModal(false)
             const updatedEvents = setNewEvents(events, data)
@@ -171,7 +172,7 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
             </div>
             <div className="flex justify-between item-center mt-auto mb-5">
             <button className="border-2 rounded-sm" onClick={closeModal} >キャンセル</button>
-            <button className="border-4 border-double rounded-sm bg-emerald-400" onClick={booking} >予約する</button>
+            <button className="border-4 border-double rounded-sm bg-emerald-400" onClick={sendMessage} >予約する</button>
             </div>
         </div>
         ):(
