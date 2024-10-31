@@ -41,7 +41,6 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
                     charge_name:staff!,
                     reservation_contents:"カット",
                     btn1_url:"https://next-line.onrender.com",
-                    btn3_url:`https://next-line.onrender.com/cancel?userId=${userId}&shopName=${shopName}&staff=${staff}&day=${day}&start=${start}&end=${end}`
                 },
                 notificationToken: notification
             }
@@ -53,6 +52,7 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
     }
 
     /*
+    btn3_url:`https://next-line.onrender.com/cancel?userId=${userId}&shopName=${shopName}&staff=${staff}&day=${day}&start=${start}&end=${end}`
     const sendMessage = async () => {
         if (liffToken && accessToken){
             const notifier_token:NotificationToken = await issueNotifierToken(liffToken, accessToken)
