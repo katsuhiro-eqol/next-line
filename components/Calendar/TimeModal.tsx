@@ -93,7 +93,9 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
                 day: day,
                 start: day+"T"+start,
                 end: day+"T"+end,
-                continuousNotificationToken:continuousNotificationToken
+                continuousNotificationToken:continuousNotificationToken,
+                accessToken:accessToken??"",
+                liffToken:liffToken??""
             }
             reservation(data)
             setIsOpenTM(false)

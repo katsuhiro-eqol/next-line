@@ -17,7 +17,9 @@ export type Reservation = {
     day: string,
     start: string,
     end: string,
-    continuousNotificationToken:string
+    continuousNotificationToken:string,
+    accessToken:string,
+    liffToken:string
   }
 
 export type Event = {
