@@ -141,8 +141,8 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
 
     useEffect(() => {
         if (liff?.isLoggedIn()) {
-            const accessToken = liff.getAccessToken()
-            setLiffToken(accessToken)
+            const liffToken = liff.getAccessToken()
+            setLiffToken(liffToken)
         }
     }, [liff])
 
