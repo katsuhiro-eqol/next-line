@@ -17,9 +17,7 @@ export type Reservation = {
     day: string,
     start: string,
     end: string,
-    continuousNotificationToken:string,
-    accessToken:string,
-    liffToken:string
+    continuousNotificationToken:string
   }
 
 export type Event = {
@@ -44,6 +42,19 @@ export type Message = {
         reservation_contents:string,
         btn1_url:string
     },
+    notificationToken:string
+}
+
+export type Message2 = {
+    templateName:string,
+    params:{
+        "date": string,
+        "address": string,
+        "daytime": "1日",
+        "shop_name": string,
+        "charge_name": string,
+        "reservation_contents": string
+      },
     notificationToken:string
 }
 
