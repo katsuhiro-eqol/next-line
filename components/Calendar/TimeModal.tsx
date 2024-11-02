@@ -1,6 +1,6 @@
 "use client"
 import { useState, useEffect } from "react"
-import reservation from "@/service/reservation"
+import {reservation} from "@/service/reservation"
 import { judgeAvailability, judgeCanReserve, setNewEvents } from "@/service/functions";
 import {dayAvailability} from "@/service/dayAvailability";
 import issueChannelAccessToken from "@/service/Line/issueAccessToken";

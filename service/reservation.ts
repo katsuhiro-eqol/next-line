@@ -3,7 +3,7 @@ import { Reservation } from "@/type/type"
 
 
 
-export default async function reservation(obj:Reservation){
+export async function reservation(obj:Reservation){
     try {
         let { data: Reservation, error } = await supabase
           .from('reservation')
@@ -11,4 +11,16 @@ export default async function reservation(obj:Reservation){
       } catch (error) {
         console.log(error)
       }
+}
+
+export async function updateReservation(id:number, notificationToken:string){
+    try {
+        let { data: Reservation, error } = await supabase
+          .from('reservation')
+          .update({notificationToken: notificationToken})
+          .eq("id", id)
+      } catch (error) {
+        console.log(error)
+      } 
+
 }

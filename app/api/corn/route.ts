@@ -3,6 +3,7 @@ import { supabase } from "@/utils/supabase/supabase"
 import issueChannelAccessToken from "@/service/Line/issueAccessToken";
 import {Message2} from "@/type/type"
 import sendServiceMessage2 from "@/service/Line/sendServiceMessage2";
+import { updateReservation } from "@/service/reservation";
 
 //予約日の一日前にリマインドメッセージを送るための関数。前日の正午に送信することを念頭におく
 export async function GET(request: NextRequest) {
@@ -20,28 +21,28 @@ export async function GET(request: NextRequest) {
           .eq("day",tomorrow)
 
           if (reservations){
-            reservations.map((reservation) => {
-                if (reservation.notificationToken){
-                    const date = reservation.start.split("T")[0] + " " + reservation.start.split("T")[1]
-                    const message:Message2 = {
-                        templateName:"book_request_d_b_ja",
-                        params:{
-                            "date": date,
-                            "address": "----",
-                            "daytime": "1日",
-                            "shop_name": reservation.shop,
-                            "charge_name": reservation.staff,
-                            "reservation_contents": "カット"
-                          },
-                        notificationToken: reservation.notificationToken
-                    }
-                    const postData = sendServiceMessage2(accessToken, message)
-                    console.log("notification2",postData)
+            //map関数の中でasync/awaitは使えない
+            for (const reservation of reservations){
+                const date = reservation.start.split("T")[0] + " " + reservation.start.split("T")[1]
+                const message:Message2 = {
+                    templateName:"book_request_d_b_ja",
+                    params:{
+                        "date": date,
+                        "address": "----",
+                        "daytime": "1日",
+                        "shop_name": reservation.shop,
+                        "charge_name": reservation.staff,
+                        "reservation_contents": "カット"
+                      },
+                    notificationToken: reservation.notificationToken
                 }
-            })
+                const postData = await sendServiceMessage2(accessToken, message)
+                updateReservation(reservation.id, postData.notificationToken)
+            }
+            return NextResponse.json({date:tomorrowStr, reservation:reservations})
+          } else {
+            return NextResponse.json({ error: "エラー" }, { status: 500 });
           }
-
-          return NextResponse.json({date:tomorrowStr, reservations:reservations})
     } catch (error) {
         return NextResponse.json({ error: "エラー" }, { status: 500 });
     }
