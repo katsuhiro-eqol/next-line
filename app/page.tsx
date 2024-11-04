@@ -25,7 +25,7 @@ export default function Login() {
         console.log(profile)
     } else {
         console.log("loginしてません")
-        //liff?.login()
+        liff?.login()
     }
   }, [liff]);
 
