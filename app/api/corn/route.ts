@@ -42,8 +42,8 @@ export async function POST(request: NextRequest) {
                     },
                   notificationToken: reservation.notificationToken
               }
-              //const postData = await sendServiceMessage2(accessToken, message)
-              //updateReservation(reservation.id, postData.notificationToken)
+              const postData = await sendServiceMessage2(accessToken, message)
+              updateReservation(reservation.id, postData.notificationToken)
             }
           }
           return NextResponse.json({date:tomorrowStr, reservation:reservations, accessToken:accessToken})
