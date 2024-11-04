@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
                     },
                   notificationToken: reservation.notificationToken
               }
-              const postData = await sendServiceMessage2(accessToken, message)
+              const postData = await sendServiceMessage2(accessToken.access_token, message)
               updateReservation(reservation.id, postData.notificationToken)
             }
           }
