@@ -29,6 +29,7 @@ export async function POST(request: NextRequest) {
           //map関数の中でasync/awaitは使えない
           for (const reservation of reservations){
               const date = reservation.start.split("T")[0] + " " + reservation.start.split("T")[1]
+              if (reservation.notificationToken){
               const message:Message2 = {
                   templateName:"book_request_d_b_ja",
                   params:{
@@ -41,10 +42,11 @@ export async function POST(request: NextRequest) {
                     },
                   notificationToken: reservation.notificationToken
               }
-              const postData = await sendServiceMessage2(accessToken, message)
-              updateReservation(reservation.id, postData.notificationToken)
+              //const postData = await sendServiceMessage2(accessToken, message)
+              //updateReservation(reservation.id, postData.notificationToken)
+            }
           }
-          return NextResponse.json({date:tomorrowStr, reservation:reservations})
+          return NextResponse.json({date:tomorrowStr, reservation:reservations, accessToken:accessToken})
         } else {
           return NextResponse.json({ error: "エラー" }, { status: 500 });
         }
