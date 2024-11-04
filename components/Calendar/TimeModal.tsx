@@ -29,29 +29,6 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
         setAccessToken(token.access_token)
     }
 
-    /*
-    const sendMessage = async () => {
-        if (liffToken && accessToken){
-            const message:Message = {
-                templateName:"book_request_d_b_ja",
-                params:{
-                    date:day+" "+ start,
-                    address:"----",
-                    shop_name:shopName!,
-                    charge_name:staff!,
-                    reservation_contents:"カット",
-                    btn1_url:"https://next-line.onrender.com",
-                },
-                notificationToken: notification
-            }
-            const postData = await sendServiceMessage(accessToken, message)
-            console.log("postData",postData)
-        } else {
-            console.log("送信失敗")
-        }
-    }
-    */
-
     const sendMessage = async () => {
         if (liffToken && accessToken){
             const notifier_token:NotificationToken = await issueNotifierToken(liffToken, accessToken)
@@ -201,26 +178,3 @@ const TimeModal = ({startTime, setIsOpenTM, day, shopName, staff, setShowModal, 
 }
 
 export default TimeModal;
-
-        /*
-        try {
-            const response = await fetch("https://api.line.me/oauth2/v3/token", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body: new URLSearchParams({
-                    grant_type: "client_credentials",
-                    client_id: process.env.NEXT_PUBLIC_LINE_CHANNEL_ID!,
-                    client_secret: process.env.NEXT_PUBLIC_LINE_CHANNEL_SECRET!,
-                }),
-                });               
-
-                const jsonData = await response.json();
-                if (jsonData){
-                setAccessToken(jsonData.access_token)
-                }
-        } catch(error) {
-            console.error('Error fetching data:', error);
-        }
-        */

@@ -6,6 +6,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import jaLocale from '@fullcalendar/core/locales/ja'
 import TimeModal from "@/components/Calendar/TimeModal";
 import Cancel from "@/components/Calendar/Cancel";
+
 import {Event} from "@/type/type"
 import { judgeAvailability, judgeCanReserve } from "@/service/functions";
 //import loadDayReservation from "@/service/loadDayReservation";
@@ -43,7 +44,6 @@ const DayModal = ({day, shopName, staff, events, showModal, setShowModal, openni
             return obj.title===title && obj.start===startArray[0]+":"+startArray[1]
         })
         if (selected.length != 0 && selected[0].userId === userId){
-            alert("予約をキャンセルしますか？");
             setCancelFlag(true)
             setStartTime(startStr)
             setCancelEvent(selected[0])

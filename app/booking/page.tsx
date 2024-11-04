@@ -5,6 +5,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import jaLocale from '@fullcalendar/core/locales/ja'
 import DayModal from "@/components/Calendar/DayModal";
+import Alert from "@/components/Alert"
 import loadDayReservation from "@/service/loadDayReservation";
 import getShops from "@/service/getShops"
 import { loadDayAvailability } from "@/service/dayAvailability";
@@ -32,6 +33,8 @@ export default function Booking() {
     const [userId, setUserId] = useState<string>("xxxxxx")
     const [events, setEvents] = useState<any[]>([])
     const [availability, setAvailability] = useState<any[]>([])
+    const [alertState, setAlertState] = useState<boolean>(false)
+    const [alertDetails, setAlertDetails] = useState<string>("")
 
     const loadShops = async () => {
         const data = await getShops()
@@ -62,10 +65,26 @@ export default function Booking() {
     }
 
     const handleDateClick = (arg:any) => {
-        setShowModal(true)
-        setDay(arg.dateStr)
-        if (shopName && staff){
-            loadReservations(arg.dateStr,shopName,staff,userId)
+        console.log(arg.dateStr)
+        const today = new Date()
+        today.setHours(0, 0, 0, 0)
+        let date_90 = new Date()
+        date_90.setDate(date_90.getDate()+90)
+        date_90.setHours(0,0,0,0)
+
+        
+        if (new Date(arg.dateStr) < today) {
+            setAlertState(true)
+            setAlertDetails("過去の日時です")
+        } else if (new Date(arg.dateStr) > date_90){
+            setAlertState(true)
+            setAlertDetails("３ヶ月以上先の予約はできません")
+        } else {
+            setShowModal(true)
+            setDay(arg.dateStr)
+            if (shopName && staff){
+                loadReservations(arg.dateStr,shopName,staff,userId)
+            }
         }
       };
 
@@ -187,7 +206,7 @@ export default function Booking() {
             </div>
         </div>
       )}
-
+        {alertState && (<Alert alertDetails={alertDetails} setAlertState={setAlertState} />)}
       </>
     );
   }
