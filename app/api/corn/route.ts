@@ -29,18 +29,19 @@ export async function POST(request: NextRequest) {
           //map関数の中でasync/awaitは使えない
           for (const reservation of reservations){
               const date = reservation.start.split("T")[0] + " " + reservation.start.split("T")[1]
-              if (reservation.notificationToken){
-              const message:Message2 = {
-                  templateName:"book_request_d_b_ja",
+              if (reservation.continuousNotificationToken){
+                const message:Message2 = {
+                  templateName:"remind_d_b_ja",
                   params:{
-                      "date": date,
-                      "address": "----",
-                      "daytime": "1日",
-                      "shop_name": reservation.shop,
-                      "charge_name": reservation.staff,
-                      "reservation_contents": "カット"
+                      date: date,
+                      address: "----",
+                      daytime: "1日",
+                      shop_name: reservation.shop,
+                      charge_name: reservation.staff,
+                      reservation_contents: "カット",
+                      btn1_url: "https://next-line.onrender.com"
                     },
-                  notificationToken: reservation.notificationToken
+                  notificationToken: reservation.continuousNotificationToken
               }
               const postData = await sendServiceMessage2(accessToken.access_token, message)
               updateReservation(reservation.id, postData.notificationToken)
@@ -76,16 +77,17 @@ export async function GET(request: NextRequest) {
             for (const reservation of reservations){
                 const date = reservation.start.split("T")[0] + " " + reservation.start.split("T")[1]
                 const message:Message2 = {
-                    templateName:"book_request_d_b_ja",
-                    params:{
-                        "date": date,
-                        "address": "----",
-                        "daytime": "1日",
-                        "shop_name": reservation.shop,
-                        "charge_name": reservation.staff,
-                        "reservation_contents": "カット"
-                      },
-                    notificationToken: reservation.notificationToken
+                  templateName:"remind_d_b_ja",
+                  params:{
+                      date: date,
+                      address: "----",
+                      daytime: "1日",
+                      shop_name: reservation.shop,
+                      charge_name: reservation.staff,
+                      reservation_contents: "カット",
+                      btn1_url: "https://next-line.onrender.com"
+                    },
+                  notificationToken: reservation.continuousNotificationToken
                 }
                 const postData = await sendServiceMessage2(accessToken, message)
                 updateReservation(reservation.id, postData.notificationToken)

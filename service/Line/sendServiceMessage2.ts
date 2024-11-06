@@ -18,6 +18,7 @@ export default async function sendServiceMessage2(accessToken:string, message:Me
                return {notificationToken:""}
             }
     } catch(error) {
+        console.log(error)
         console.error('Error fetching data:', error);
         return {notificationToke:""}
     }

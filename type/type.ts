@@ -48,12 +48,13 @@ export type Message = {
 export type Message2 = {
     templateName:string,
     params:{
-        "date": string,
-        "address": string,
-        "daytime": "1日",
-        "shop_name": string,
-        "charge_name": string,
-        "reservation_contents": string
+        date: string,
+        address: string,
+        daytime: string,
+        shop_name: string,
+        charge_name: string,
+        reservation_contents: string,
+        btn1_url: string
       },
     notificationToken:string
 }

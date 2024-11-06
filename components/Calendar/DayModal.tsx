@@ -75,8 +75,8 @@ const DayModal = ({day, shopName, staff, events, showModal, setShowModal, openni
                         minute: '2-digit',
                         hour12: false
                       }}
-                    slotMinTime="9:00"
-                    slotMaxTime="17:00"
+                    slotMinTime={openning}
+                    slotMaxTime={closing}
                     allDaySlot={false}
                     locales={[jaLocale]}     
                     locale="ja"

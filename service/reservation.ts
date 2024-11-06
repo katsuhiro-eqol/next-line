@@ -17,7 +17,7 @@ export async function updateReservation(id:number, notificationToken:string){
     try {
         let { data: Reservation, error } = await supabase
           .from('reservation')
-          .update({notificationToken: notificationToken})
+          .update({continuousNotificationToken: notificationToken})
           .eq("id", id)
       } catch (error) {
         console.log(error)

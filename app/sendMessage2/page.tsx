@@ -14,19 +14,20 @@ export default function SendMessage2(){
         console.log("accessToken", accessToken.access_token)
         const date = item.start.split("T")[0] + " " + item.start.split("T")[1]
         const message:Message2 = {
-            templateName:"book_request_d_b_ja",
+            templateName:"remind_d_b_ja",
             params:{
-                "date": date,
-                "address": "----",
-                "daytime": "1日",
-                "shop_name": item.shop,
-                "charge_name": item.staff,
-                "reservation_contents": "カット"
+                date: date,
+                address: "----",
+                daytime: "1日",
+                shop_name: item.shop,
+                charge_name: item.staff,
+                reservation_contents: "カット",
+                btn1_url: "https://next-line.onrender.com",
               },
             notificationToken: item.continuousNotificationToken
         }
         console.log("notificationToken", item.continuousNotificationToken)
-        
+        console.log(message)
         const postData = await sendServiceMessage2(accessToken.access_token, message)
         updateReservation(item.id, postData.notificationToken)
         
@@ -74,7 +75,10 @@ export default function SendMessage2(){
 }
 
 /*
-
+fetch.js:30 
+        
+        
+       PATCH https://yyqxoeczilrmolivirmk.supabase.co/rest/v1/reservation?id=eq.94
 
               if (reservations){
                 //map関数の中でasync/awaitは使えない
