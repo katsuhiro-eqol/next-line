@@ -31,8 +31,8 @@ export default function Login() {
 
   return (
     <div className="h-screen  bg-white ">
-      <img className="object-cover max-h-60 w-screen shadow-lg" src={"eqol_hp.jpg"} />
-      <img className="fixed top-44 right-7 w-1/5" src={"eqol_logo_purple.png"} />
+      <img className="object-cover max-h-60 w-screen shadow-lg" src={"eqol_hp.jpg"} alt="no image" />
+      <img className="fixed top-44 right-7 w-1/5" src={"eqol_logo_purple.png"} alt="eQOL" />
 
         <div className="w-4/5 mt-10 mx-auto">
           <h2 className="mb-3 font-bold">🔳 LINE機能を使った予約アプリ（デモアプリ）</h2>
@@ -50,6 +50,7 @@ export default function Login() {
         <div className="flex justify-center">
         <div className="fixed bottom-10 w-2/3 h-10 py-2 mx-2 text-center text-white bg-green-800 text-lg shadow-lg">
         <Link href="/booking">デモアプリを試す</Link>
+        <Link href="/sendMessage3">後続メッセージテスト</Link>
         </div>
         </div>
       )} 
