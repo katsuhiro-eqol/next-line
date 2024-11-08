@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/api/corn/route.js", "utils/cron.js", "utils/cronTask.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/api/cron/route.js", "utils/cron.js", "utils/cronTask.js"],
   "exclude": ["node_modules"]
 }
