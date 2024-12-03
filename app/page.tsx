@@ -35,7 +35,7 @@ export default function Login() {
       <img className="fixed top-44 right-7 w-1/5" src={"eqol_logo_purple.png"} alt="eQOL" />
 
         <div className="w-4/5 mt-10 mx-auto">
-          <h2 className="mb-3 font-bold">🔳 LINE機能を使った予約アプリ（デモアプリ）</h2>
+          <h2 className="mb-3 font-bold">🔳 ヘアサロン予約アプリ</h2>
           <p className="text-base">このLINEアプリは、ヘアサロンや整体院などのサービスのための予約デモを体験できます。</p>
           <p className="text-base">LINEメッセージを自動配信するなど、LINEアプリならではメリットが数多くあります。</p>
           <p className="mt-4 text-xs">このデモアプリではお客様のLINEアカウントの「プロフィール情報」（表示名、ユーザーID）を取得します。デモのために一旦サーバーに保存しますが、データは毎日削除されます。</p>
@@ -43,13 +43,13 @@ export default function Login() {
       {(liff?.isLoggedIn()) ? (
         <div className="flex justify-center">
         <div className="fixed bottom-10 w-2/3 h-100 py-2 mx-2 text-center text-white bg-green-500 text-lg shadow-lg">
-        <Link href="/booking">デモアプリを試す</Link>
+        <Link href="/booking">予約する</Link>
         </div>
         </div>
       ):(
         <div className="flex justify-center">
         <div className="fixed bottom-10 w-2/3 h-10 py-2 mx-2 text-center text-white bg-green-800 text-lg shadow-lg">
-        <Link href="/booking">デモアプリを試す</Link>
+        <Link href="/booking">ログイン</Link>
         <Link href="/sendMessage3">後続メッセージテスト</Link>
         </div>
         </div>

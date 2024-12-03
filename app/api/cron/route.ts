@@ -19,7 +19,6 @@ export async function POST(request: NextRequest) {
 
   const accessToken = await issueChannelAccessToken()
 
-  
   try {
     let { data: reservations, error } = await supabase
       .from('reservation')
@@ -56,50 +55,11 @@ export async function POST(request: NextRequest) {
 } catch (error) {
     return NextResponse.json({ error: "エラー" }, { status: 500 });
 }
-
-  /*
-  const accessToken = await issueChannelAccessToken()
-
-  try {
-      let { data: reservations, error } = await supabase
-        .from('reservation')
-        .select("*")
-        .eq("day",tomorrow)
-
-        if (reservations){
-          //map関数の中でasync/awaitは使えない
-          for (const reservation of reservations){
-              const date = reservation.start.split("T")[0] + " " + reservation.start.split("T")[1]
-              if (reservation.continuousNotificationToken){
-                const message:Message2 = {
-                  templateName:"remind_d_b_ja",
-                  params:{
-                      date: date,
-                      address: "----",
-                      daytime: "1日",
-                      shop_name: reservation.shop,
-                      charge_name: reservation.staff,
-                      reservation_contents: "カット",
-                      btn1_url: "https://next-line.onrender.com"
-                    },
-                  notificationToken: reservation.continuousNotificationToken
-              }
-              const postData = await sendServiceMessage2(accessToken.access_token, message)
-              updateReservation(reservation.id, postData.notificationToken)
-            }
-          }
-          return NextResponse.json({date:tomorrowStr, reservation:reservations, accessToken:accessToken})
-        } else {
-          return NextResponse.json({ error: "エラー" }, { status: 500 });
-        }
-  } catch (error) {
-      return NextResponse.json({ error: "エラー" }, { status: 500 });
-  }
-      */
 }
 }
 
 //予約日の一日前にリマインドメッセージを送るための関数。前日の正午に送信することを念頭におく
+/*
 export async function GET(request: NextRequest) {
     let date = new Date() //予約前日の日時が取得されたとする。この日の翌日の予約のユーザーに送信
     date.setDate(date.getDate()+1)
@@ -142,3 +102,4 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ error: "エラー" }, { status: 500 });
     }
 }
+*/
